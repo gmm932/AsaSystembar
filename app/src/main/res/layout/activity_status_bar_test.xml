@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_status_bar_test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_view"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="800dp">
+            <TextView
+                android:id="@+id/tv_view"
+                android:layout_width="match_parent"
+                android:background="#efecf1"
+                android:text="hello world~~~~~~hello hellohello world~~~~~~hello hellohello world~~~~~~hello hello"
+                android:layout_height="800dp" />
+
+            <Button
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="add"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

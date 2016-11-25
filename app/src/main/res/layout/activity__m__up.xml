@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/buttonPanel">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#b95656" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="700dp"
+                android:background="#40a6c5" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/clear_all"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/lightStatusBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="light_Status_Bar" />
+
+        <Button
+            android:id="@+id/transparentStatusBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="transparent_Status_Bar" />
+
+        <Button
+            android:id="@+id/transparentNavigationbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="transparent_Navigation_bar" />
+        <Button
+            android:id="@+id/add_decocview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add_decocview"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/clear_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="clear_all" />
+</RelativeLayout>
