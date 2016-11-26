@@ -9,8 +9,6 @@ import android.view.Window;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Window window;
-    private ViewGroup decorView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        findViewById(R.id.m_up).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.demo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, DemoActivity.class));
@@ -28,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, AsaSystemBarTestActivity.class));
+            }
+        });
+        findViewById(R.id.simple).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SimpleTintBarActivity.class));
             }
         });
     }

@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 
 public class AsaSystemBar {
 
+    private int useBelowVersion;
     private Window window;
     private boolean lightStatusBar = false;
     private boolean transparentStatusBar = false;
@@ -34,10 +35,10 @@ public class AsaSystemBar {
     private int statusBarColor;
     private Drawable statusBarDrawable;
 
-    private AsaSystemBar(Window window, boolean lightStatusBar, boolean transparentStatusBar,
-                         boolean transparentNavigationbar, boolean isSetActionbarPadding,
-                         View actionBarView, boolean addStatusBarView, int statusBarColor,
-                         Drawable statusBarDrawable) {
+    private AsaSystemBar(int useBelowVersion, Window window, boolean lightStatusBar, boolean transparentStatusBar,
+                         boolean transparentNavigationbar, boolean isSetActionbarPadding, View actionBarView,
+                         boolean addStatusBarView, int statusBarColor, Drawable statusBarDrawable) {
+        this.useBelowVersion = useBelowVersion;
         this.window = window;
         this.lightStatusBar = lightStatusBar;
         this.transparentStatusBar = transparentStatusBar;
@@ -49,12 +50,13 @@ public class AsaSystemBar {
         this.statusBarDrawable = statusBarDrawable;
     }
 
-    private static boolean isLessKitkat() {
+    public static boolean isLessKitkat() {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT;
     }
 
     private void process() {
         if (isLessKitkat()) return;
+        if (useBelowVersion < Build.VERSION.SDK_INT) return;
         //单独处理状态栏图标颜色
         processBarIconColor();
         //5.0~6.0和6.0以上唯一的区别是5.0~6.0不能改变状态栏图标的颜色
@@ -260,6 +262,7 @@ public class AsaSystemBar {
     }
 
     public static class Builder {
+        private int useBelowVersion;
         private Window window;
         private boolean lightStatusBar = false;
         private boolean transparentStatusBar = false;
@@ -270,7 +273,17 @@ public class AsaSystemBar {
         private int statusBarColor = -1;
         private Drawable statusBarDrawable;
 
+        /**
+         * 低于该版本时使用
+         * @param useBelowVersion
+         * @return
+         */
+        public Builder setUseBelow(int useBelowVersion) {
+            this.useBelowVersion = useBelowVersion;
+            return this;
+        }
 
+        //需要支持dialog等
         public Builder setWindow(@NonNull Activity activity) {
             this.window = activity.getWindow();
             return this;
@@ -334,8 +347,9 @@ public class AsaSystemBar {
         }
 
         public void process() {
-            new AsaSystemBar(window, lightStatusBar, transparentStatusBar, transparentNavigationbar,
-                    isSetActionbarPadding, actionBarView, addStatusBarView, statusBarColor, statusBarDrawable).process();
+            new AsaSystemBar(useBelowVersion, window, lightStatusBar, transparentStatusBar
+                    , transparentNavigationbar, isSetActionbarPadding, actionBarView,
+                    addStatusBarView, statusBarColor, statusBarDrawable).process();
         }
     }
 }

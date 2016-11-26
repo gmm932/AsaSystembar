@@ -4,17 +4,24 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context="com.gmm.asasystembar.MainActivity">
 
     <Button
-        android:id="@+id/m_up"
+        android:id="@+id/demo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="m_systembar" />
+        android:text="Demo" />
 
     <Button
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="status_bar_utils_test" />
+        android:text="AsaSystemBarTest" />
+    <Button
+        android:id="@+id/simple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SimpleTintBar" />
 </LinearLayout>
