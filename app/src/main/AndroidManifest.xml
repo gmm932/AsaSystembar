@@ -15,8 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity_M_Up" />
-        <activity android:name=".StatusBarTestActivity"></activity>
+        <activity android:name=".DemoActivity" />
+        <activity android:name=".AsaSystemBarTestActivity" />
+        <activity android:name=".SimpleTintBarActivity"></activity>
     </application>
 
 </manifest>

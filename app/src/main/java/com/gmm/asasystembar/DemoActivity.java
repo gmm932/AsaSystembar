@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -14,12 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-public class Activity_M_Up extends AppCompatActivity {
+public class DemoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity__m__up);
+        setContentView(R.layout.activity_demo);
 
 
         //clear all flag
@@ -57,20 +58,25 @@ public class Activity_M_Up extends AppCompatActivity {
 
                 int flag = getWindow().getDecorView().getSystemUiVisibility();
                 flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-                getWindow().setStatusBarColor(Color.BLACK);
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
                 getWindow().getDecorView().setSystemUiVisibility(flag);
             }
         });
 
         //add decorview
         findViewById(R.id.add_decocview).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                StatusBarUtils.from(Activity_M_Up.this)
+               /* AsaSystemBar.from(DemoActivity.this)
                         .addStatusBarView(true)
-                        .process();
-              /*  ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
-                setupStatusBarView(Activity_M_Up.this, viewGroup);*/
+                        .process();*/
+                int flag = getWindow().getDecorView().getSystemUiVisibility();
+                flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+                getWindow().getDecorView().setSystemUiVisibility(flag);
+                ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+                setupStatusBarView(DemoActivity.this, viewGroup);
             }
         });
     }

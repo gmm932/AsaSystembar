@@ -1,4 +1,4 @@
-package com.gmm.asasystembar;
+package com.gmm.asasystembar.systembar;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
  * Created by gmm on 2016/11/24.
  */
 
-public class StatusBarUtils {
+public class AsaSystemBar {
 
     private Window window;
     private boolean lightStatusBar = false;
@@ -33,12 +33,11 @@ public class StatusBarUtils {
     private View actionBarView;
     private int statusBarColor;
     private Drawable statusBarDrawable;
-    private int current = Build.VERSION.SDK_INT;
 
-    public StatusBarUtils(Window window, boolean lightStatusBar, boolean transparentStatusBar,
-                          boolean transparentNavigationbar, boolean isSetActionbarPadding,
-                          View actionBarView, boolean addStatusBarView, int statusBarColor,
-                          Drawable statusBarDrawable) {
+    private AsaSystemBar(Window window, boolean lightStatusBar, boolean transparentStatusBar,
+                         boolean transparentNavigationbar, boolean isSetActionbarPadding,
+                         View actionBarView, boolean addStatusBarView, int statusBarColor,
+                         Drawable statusBarDrawable) {
         this.window = window;
         this.lightStatusBar = lightStatusBar;
         this.transparentStatusBar = transparentStatusBar;
@@ -50,21 +49,90 @@ public class StatusBarUtils {
         this.statusBarDrawable = statusBarDrawable;
     }
 
-    public static boolean isLessKitkat() {
+    private static boolean isLessKitkat() {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT;
     }
 
     private void process() {
-        //processPrivateAPI();
-        //processActionBar(actionBarView);
+        if (isLessKitkat()) return;
+        //单独处理状态栏图标颜色
+        processBarIconColor();
+        //5.0~6.0和6.0以上唯一的区别是5.0~6.0不能改变状态栏图标的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            processLollipopUp();
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            processKitkat();
+        }
+    }
 
-        if (current >= Build.VERSION_CODES.M) {
-            processM();
-        } /*else if (current >= Build.VERSION_CODES.LOLLIPOP && current < Build.VERSION_CODES.M) {
-            processKitkat();
-        } else if (current >= Build.VERSION_CODES.KITKAT){
-            processKitkat();
-        }*/
+    private void processBarIconColor() {
+        //单独处理小米，魅族
+       // processPrivateAPI();
+        //处理6.0以上其他机器
+        processMUpAPI();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void processMUpAPI() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        if (lightStatusBar) {
+            int flag = window.getDecorView().getSystemUiVisibility();
+            flag |= (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.getDecorView().setSystemUiVisibility(flag);
+        }
+    }
+
+    /**
+     * 处理4.4沉浸
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void processKitkat() {
+        //透明状态栏
+        WindowManager.LayoutParams winParams = window.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (transparentStatusBar) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        window.setAttributes(winParams);
+
+        if (isSetActionbarPadding) {
+            processActionBar(actionBarView);
+        }
+
+        if (addStatusBarView) {
+            setupStatusBarView(window.getContext(), (ViewGroup) window.getDecorView());
+        }
+    }
+
+    /**
+     * 处理5.0以上的透明状态栏
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void processLollipopUp() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+        int flag = window.getDecorView().getSystemUiVisibility();
+        if (transparentStatusBar || statusBarColor != -1) {
+            flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            window.setStatusBarColor(statusBarColor != -1 ? statusBarColor : Color.TRANSPARENT);
+        }
+        if (transparentNavigationbar) {
+            flag |= (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            window.setNavigationBarColor(statusBarColor != -1 ? statusBarColor : Color.TRANSPARENT);
+        }
+        if (isSetActionbarPadding) {
+            processActionBar(actionBarView);
+        }
+        window.getDecorView().setSystemUiVisibility(flag);
+
+        if (addStatusBarView) {
+            setupStatusBarView(window.getContext(), (ViewGroup) window.getDecorView());
+        }
     }
 
     /**
@@ -141,62 +209,6 @@ public class StatusBarUtils {
     }
 
     /**
-     * 处理4.4沉浸
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void processKitkat() {
-
-        WindowManager.LayoutParams winParams = window.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (transparentStatusBar) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        window.setAttributes(winParams);
-        ViewGroup viewGroup = (ViewGroup) window.getDecorView();
-        setupStatusBarView(window.getContext(), viewGroup);
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void processM() {
-        if (current < Build.VERSION_CODES.M) {
-            return;
-        }
-
-        int flag = window.getDecorView().getSystemUiVisibility();
-        if (lightStatusBar) {
-            /**
-             * 改变字体颜色
-             * see {@link <a href="https://developer.android.com/reference/android/R.attr.html#windowLightStatusBar"></a>}
-             */
-            flag |= (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-        if (transparentStatusBar || statusBarColor != -1) {
-            flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            window.setStatusBarColor(statusBarColor != -1 ? statusBarColor : Color.TRANSPARENT);
-        }
-        if (transparentNavigationbar) {
-            flag |= (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            window.setNavigationBarColor(statusBarColor != -1 ? statusBarColor : Color.TRANSPARENT);
-        }
-        if (isSetActionbarPadding) {
-            if (actionBarView == null) {
-                throw new IllegalArgumentException("'actionBarView' cannot be null.");
-            }
-            processActionBar(actionBarView);
-        }
-        window.getDecorView().setSystemUiVisibility(flag);
-
-        if (addStatusBarView) {
-            setupStatusBarView(window.getContext(), (ViewGroup) window.getDecorView());
-        }
-    }
-
-    /**
      * see {@link <a href="https://github.com/jgilfelt/SystemBarTint"></a>}
      */
     private View mStatusBarTintView;
@@ -208,28 +220,37 @@ public class StatusBarUtils {
             params.rightMargin = mConfig.getNavigationBarWidth();
         }*/
         mStatusBarTintView.setLayoutParams(params);
-        mStatusBarTintView.setBackgroundColor(Color.RED);
-        mStatusBarTintView.setVisibility(View.GONE);
+        if (statusBarDrawable != null) {
+            mStatusBarTintView.setBackgroundDrawable(statusBarDrawable);
+        } else if (statusBarColor != -1) {
+            mStatusBarTintView.setBackgroundColor(statusBarColor);
+        }
         decorViewGroup.addView(mStatusBarTintView);
     }
 
 
-    private void processActionBar(final View v) {
-        if (v == null || isLessKitkat()) {
-            return;
+    private void processActionBar(final View view) {
+        if (view == null) {
+            throw new IllegalArgumentException("'actionBarView' cannot be null.");
         }
 
-        v.post(new Runnable() {
+        view.post(new Runnable() {
             @Override
             public void run() {
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop() + getStatusBarOffsetPx(v.getContext()),
-                        v.getPaddingRight(), v.getPaddingBottom());
-                v.getLayoutParams().height += getStatusBarOffsetPx(v.getContext());
+                view.setPadding(view.getPaddingLeft(), view.getPaddingTop()
+                        + getStatusBarOffsetPx(view.getContext()),
+                        view.getPaddingRight(), view.getPaddingBottom());
+                view.getLayoutParams().height += getStatusBarOffsetPx(view.getContext());
             }
         });
 
     }
 
+    /**
+     * 这个方法是清空系统状态栏的状态
+     * 主要用于一个Activity中，页面切换时重新设置状态栏的样式
+     * @param window
+     */
     public static void clearSystemUiVisibility(Window window) {
         window.getDecorView().setSystemUiVisibility(0);
     }
@@ -255,6 +276,13 @@ public class StatusBarUtils {
             return this;
         }
 
+        /**
+         * 小米魅族等需要单独设置
+         * MIUI 6+ FlyMe 4+
+         * @TargetApi M
+         * @param lightStatusBar
+         * @return
+         */
         public Builder setLightStatusBar(boolean lightStatusBar) {
             this.lightStatusBar = lightStatusBar;
             return this;
@@ -270,6 +298,11 @@ public class StatusBarUtils {
             return this;
         }
 
+        /**
+         * setActionbarView  before setActionbarPadding(true)
+         * @param isSetActionbarPadding
+         * @return
+         */
         public Builder setActionbarPadding(boolean isSetActionbarPadding) {
             this.isSetActionbarPadding = isSetActionbarPadding;
             return this;
@@ -280,6 +313,11 @@ public class StatusBarUtils {
             return this;
         }
 
+        /**
+         * setTransparentStatusBar ture before add a bar view
+         * @param addStatusBarView
+         * @return
+         */
         public Builder addStatusBarView(boolean addStatusBarView) {
             this.addStatusBarView = addStatusBarView;
             return this;
@@ -296,7 +334,7 @@ public class StatusBarUtils {
         }
 
         public void process() {
-            new StatusBarUtils(window, lightStatusBar, transparentStatusBar, transparentNavigationbar,
+            new AsaSystemBar(window, lightStatusBar, transparentStatusBar, transparentNavigationbar,
                     isSetActionbarPadding, actionBarView, addStatusBarView, statusBarColor, statusBarDrawable).process();
         }
     }
