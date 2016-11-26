@@ -22,7 +22,7 @@ public class SimpleTintBarActivity extends AppCompatActivity {
                 .addStatusBarView(true)
                 .setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .process();*/
-
+//
         tvTitle = (TextView) findViewById(R.id.tv_title);
         AsaSystemBar.from(this).setUseBelow(Build.VERSION_CODES.LOLLIPOP)
                 .setTransparentStatusBar(true)
