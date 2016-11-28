@@ -41,12 +41,18 @@ public class DemoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Window window = getWindow();
-                int flag = window.getDecorView().getSystemUiVisibility();
+                int flag = getWindow().getDecorView().getSystemUiVisibility();
+//                flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+//
+////                flag |=(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+////                        | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                getWindow().getDecorView().setSystemUiVisibility(flag);
+//                getWindow().setStatusBarColor(Color.TRANSPARENT);
+                View decor = getWindow().getDecorView();
                 flag |= (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
                         | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                window.setStatusBarColor(Color.TRANSPARENT);
-                window.getDecorView().setSystemUiVisibility(flag);
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+                decor.setSystemUiVisibility(flag);
             }
         });
 

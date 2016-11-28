@@ -231,6 +231,8 @@ public class AsaSystemBar {
         } else if (statusBarColor != -1) {
             mStatusBarTintView.setBackgroundColor(statusBarColor);
         }
+
+
         decorViewGroup.addView(mStatusBarTintView);
     }
 
@@ -266,7 +268,7 @@ public class AsaSystemBar {
     }
 
     public static class Builder {
-        private int useBelowVersion = Build.VERSION.SDK_INT + 1;
+        private int useBelowVersion = -1;
         private Window window;
         private boolean lightStatusBar = false;
         private boolean transparentStatusBar = false;
@@ -352,7 +354,10 @@ public class AsaSystemBar {
 
         public void process() {
             //如果不在使用范围内直接返回
-            if (useBelowVersion-1 < Build.VERSION.SDK_INT) return;
+            if (useBelowVersion != -1) {
+                if (useBelowVersion <= Build.VERSION.SDK_INT) return;
+            }
+
 
             new AsaSystemBar(useBelowVersion, window, lightStatusBar, transparentStatusBar
                     , transparentNavigationbar, isSetActionbarPadding, actionBarView,
