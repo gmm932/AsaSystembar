@@ -15,9 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DemoActivity" />
-        <activity android:name=".AsaSystemBarTestActivity" />
-        <activity android:name=".SimpleTintBarActivity"></activity>
+        <activity android:name=".DemoActivity" android:screenOrientation="portrait" />
+        <activity android:name=".AsaSystemBarTestActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SimpleTintBarActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SlideViewTintActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

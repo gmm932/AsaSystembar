@@ -1,11 +1,9 @@
 package com.gmm.asasystembar;
 
-import android.graphics.ImageFormat;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,15 +22,21 @@ public class SlideViewTintActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_view_tint);
-
-        AsaSystemBar.from(SlideViewTintActivity.this)
+        slideDetailsLayout = (SlideDetailsLayout) findViewById(R.id.slidedetail);
+        tvButton = (TextView) findViewById(R.id.tv_button);
+        llFoo = (LinearLayout) findViewById(R.id.ll_foo);
+        AsaSystemBar.from(this)
                 .setTransparentStatusBar(true)
                 .setActionbarView(llFoo)
                 .setActionbarPadding(true)
                 .process();
-        slideDetailsLayout = (SlideDetailsLayout) findViewById(R.id.slidedetail);
-        tvButton = (TextView) findViewById(R.id.tv_button);
-        llFoo = (LinearLayout) findViewById(R.id.ll_foo);
+
+        AsaSystemBar.from(SlideViewTintActivity.this).setUseBelow(Build.VERSION_CODES.M)
+                .setTransparentStatusBar(true)
+                .addStatusBarView(true)
+                .setStatusBarColor(ContextCompat.getColor(SlideViewTintActivity.this, R.color.alpha))
+                .process();
+
 
         tvButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,28 +70,19 @@ public class SlideViewTintActivity extends AppCompatActivity {
 
                     //添加view + padding的方式
 
-                    //6.0以上依旧不做处理
                     AsaSystemBar.from(SlideViewTintActivity.this)
                             .setTransparentStatusBar(true)
                             .setLightStatusBar(true)
                             .process();
-                    //6.0以下的
-                    if (!inited) {
-                        AsaSystemBar.from(SlideViewTintActivity.this).setUseBelow(Build.VERSION_CODES.M)
-                                .setTransparentStatusBar(true)
-                                .addStatusBarView(true)
-                                .setLightStatusBar(true)
-                                .setStatusBarColor(ContextCompat.getColor(SlideViewTintActivity.this, R.color.alpha))
-                                .process();
-                        inited = true;
-                    }
 
 
                 }else {
                     //首先要清除之前的设置
                     AsaSystemBar.clearSystemUiVisibility(getWindow());
-                    AsaSystemBar.from(SlideViewTintActivity.this).setTransparentStatusBar(true).process();
-                }
+                    AsaSystemBar.from(SlideViewTintActivity.this)
+                            .setTransparentStatusBar(true)
+                            .setLightStatusBar(false)
+                            .process(); }
             }
         });
     }
