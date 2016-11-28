@@ -34,5 +34,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SimpleTintBarActivity.class));
             }
         });
+        findViewById(R.id.slideview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SlideViewTintActivity.class));
+            }
+        });
     }
 }

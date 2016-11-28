@@ -6,4 +6,5 @@
     <color name="alpha_black_50">#50000000</color>
     <color name="white">#ffffff</color>
     <color name="bg_f6">#f6f6f6</color>
+    <color name="alpha">#50000000</color>
 </resources>

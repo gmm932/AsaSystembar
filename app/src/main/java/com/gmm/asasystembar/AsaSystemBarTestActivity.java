@@ -17,17 +17,28 @@ public class AsaSystemBarTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_status_bar_test);
         view = (LinearLayout) findViewById(R.id.ll_view);
 
-//        AsaSystemBar.from(this)
-//                .setTransparentStatusBar(true)
-//                .setLightStatusBar(true)
-//                .process();
+        //4.4.4
+/*        AsaSystemBar.from(this)
+                .setTransparentStatusBar(true)
+                .process();*/
+        //5.0
+        /*AsaSystemBar.from(this)
+                .setTransparentStatusBar(true)
+                .setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent))
+                .process();*/
+        //6.0
+        AsaSystemBar.from(this)
+                .setTransparentStatusBar(true)
+                .setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent))
+                .setLightStatusBar(true)
+                .process();
 
 //        AsaSystemBar.from(this)
 //                .setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent))
 //                .setActionbarView(view)
 //                .setActionbarPadding(true).process();
 
-        AsaSystemBar.from(this)
+       /* AsaSystemBar.from(this)
                 .setTransparentStatusBar(true)
                 .addStatusBarView(true)
                 .setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -35,7 +46,7 @@ public class AsaSystemBarTestActivity extends AppCompatActivity {
                 .setActionbarView(view)
                 .setActionbarPadding(true)
 
-                .process();
+                .process();*/
 
 //        AsaSystemBar.from(this)
 //                .setTransparentStatusBar(true)

@@ -56,7 +56,6 @@ public class AsaSystemBar {
 
     private void process() {
         if (isLessKitkat()) return;
-        if (useBelowVersion < Build.VERSION.SDK_INT) return;
         //单独处理状态栏图标颜色
         processBarIconColor();
         //5.0~6.0和6.0以上唯一的区别是5.0~6.0不能改变状态栏图标的颜色
@@ -67,15 +66,17 @@ public class AsaSystemBar {
         }
     }
 
+    private boolean isUsePrivateApi = true;
     private void processBarIconColor() {
         //单独处理小米，魅族
-       // processPrivateAPI();
+        processPrivateAPI();
         //处理6.0以上其他机器
         processMUpAPI();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void processMUpAPI() {
+        if (isUsePrivateApi) return;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         if (lightStatusBar) {
             int flag = window.getDecorView().getSystemUiVisibility();
@@ -174,7 +175,8 @@ public class AsaSystemBar {
             try {
                 processMIUI(lightStatusBar);
             } catch (Exception e2) {
-                //
+                isUsePrivateApi = false;
+                //可以继续添加其他的Android系统
             }
         }
     }
@@ -262,7 +264,7 @@ public class AsaSystemBar {
     }
 
     public static class Builder {
-        private int useBelowVersion;
+        private int useBelowVersion = Build.VERSION.SDK_INT + 1;
         private Window window;
         private boolean lightStatusBar = false;
         private boolean transparentStatusBar = false;
@@ -347,6 +349,9 @@ public class AsaSystemBar {
         }
 
         public void process() {
+            //如果不在使用范围内直接返回
+            if (useBelowVersion-1 < Build.VERSION.SDK_INT) return;
+
             new AsaSystemBar(useBelowVersion, window, lightStatusBar, transparentStatusBar
                     , transparentNavigationbar, isSetActionbarPadding, actionBarView,
                     addStatusBarView, statusBarColor, statusBarDrawable).process();

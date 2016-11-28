@@ -17,12 +17,12 @@ public class SimpleTintBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_simple_tint_bar);
 
         //使用这种方式需要在跟布局设置 fitsSystemWindow true
-        /*AsaSystemBar.from(this).setUseBelow(Build.VERSION_CODES.LOLLIPOP)
+        AsaSystemBar.from(this).setUseBelow(Build.VERSION_CODES.LOLLIPOP)
                 .setTransparentStatusBar(true)
                 .addStatusBarView(true)
                 .setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .process();*/
-//
+                .process();
+
         tvTitle = (TextView) findViewById(R.id.tv_title);
         AsaSystemBar.from(this).setUseBelow(Build.VERSION_CODES.LOLLIPOP)
                 .setTransparentStatusBar(true)

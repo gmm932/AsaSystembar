@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_slide_view_tint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.gmm.asasystembar.slidedetail.SlideDetailsLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/slidedetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:default_panel="front"
+        app:duration="300"
+        app:percent="0.4">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/wangwenye"/>
+        <TextView
+            android:id="@+id/tv_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="详情"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:id="@+id/ll_foo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="true"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="王文也"
+                android:gravity="center"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detail"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </ScrollView>
+    </com.gmm.asasystembar.slidedetail.SlideDetailsLayout>
+
+
+</RelativeLayout>
