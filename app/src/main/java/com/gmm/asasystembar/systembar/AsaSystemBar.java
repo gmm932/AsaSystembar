@@ -66,7 +66,7 @@ public class AsaSystemBar {
         }
     }
 
-    private boolean isUsePrivateApi = true;
+    private boolean isUsePrivateApi = false;
     private void processBarIconColor() {
         //单独处理小米，魅族
         processPrivateAPI();
@@ -106,7 +106,7 @@ public class AsaSystemBar {
             processActionBar(actionBarView);
         }
 
-        if (addStatusBarView) {
+        if (addStatusBarView && isUsePrivateApi == false) {
             setupStatusBarView(window.getContext(), (ViewGroup) window.getDecorView());
         }
     }
@@ -133,7 +133,7 @@ public class AsaSystemBar {
         }
         window.getDecorView().setSystemUiVisibility(flag);
 
-        if (addStatusBarView) {
+        if (addStatusBarView && isUsePrivateApi == false) {
             setupStatusBarView(window.getContext(), (ViewGroup) window.getDecorView());
         }
     }
@@ -175,7 +175,6 @@ public class AsaSystemBar {
             try {
                 processMIUI(lightStatusBar);
             } catch (Exception e2) {
-                isUsePrivateApi = false;
                 //可以继续添加其他的Android系统
             }
         }
@@ -193,6 +192,7 @@ public class AsaSystemBar {
         darkModeFlag = field.getInt(layoutParams);
         Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
         extraFlagField.invoke(window, lightStatusBar ? darkModeFlag : 0, darkModeFlag);
+        isUsePrivateApi = true;
     }
 
     /**
@@ -210,6 +210,8 @@ public class AsaSystemBar {
         } else {
             field.set(lp, (~value) & origin);
         }
+
+        isUsePrivateApi = true;
     }
 
     /**
